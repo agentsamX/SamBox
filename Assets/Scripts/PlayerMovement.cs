@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public Cinemachine.CinemachineBrain brain;
     public float m_speed = 1f;
+    public float jumpForce = 1f;
     private Transform m_cameraTransform;
     private Rigidbody m_rigidBody;
 
@@ -24,6 +25,11 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            m_rigidBody.AddForce(Vector3.up * jumpForce);
+        }
+
         Vector3 f = m_cameraTransform.forward;
         f.y = 0;
         f=f.normalized;
@@ -33,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         r = r.normalized;
 
         Vector3 dir = f * Input.GetAxis("Vertical") * m_speed + r * Input.GetAxis("Horizontal") * m_speed;
-        dir.y=m_rigidBody.velocity.y;
+        dir.y=m_rigidBody.velocity.y+Vector3.down.y*9.8f*Time.deltaTime;
 
         m_rigidBody.velocity=dir;
         
